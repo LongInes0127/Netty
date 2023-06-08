@@ -56,7 +56,10 @@ public class ServerInboundHandler1 extends ChannelInboundHandlerAdapter {
 		ByteBuf buffer = ctx.alloc().buffer();
 		byte[] writeBytes = "hello NettyClient, I am NettyServer".getBytes(Charset.defaultCharset());
 		buffer.writeBytes(writeBytes);
-		ctx.channel().writeAndFlush(buffer);
+		// 从tail节点向前找inbound类型的handler，如果找到则执行该handler的write方法
+		//ctx.channel().writeAndFlush(buffer);
+		// 从当前位置向前找outbound类型的handler，如果找到则执行该handler的write方法
+		ctx.writeAndFlush(buffer);
 
 		//super.channelRead(ctx, msg);
 	}
